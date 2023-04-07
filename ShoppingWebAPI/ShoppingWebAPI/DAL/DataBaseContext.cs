@@ -10,7 +10,7 @@ namespace ShoppingWebAPI.DAL
 
         }
 
-        private DbSet<Country> Countries { get; set; } //Countries es el nombre de la tabla
+        public DbSet<Country> Countries { get; set; } //Countries es el nombre de la tabla
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
