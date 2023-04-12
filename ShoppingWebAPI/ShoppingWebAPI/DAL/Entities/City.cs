@@ -2,17 +2,19 @@
 
 namespace ShoppingWebAPI.DAL.Entities
 {
-    public class Country : Entity
+    public class City : Entity
     {
-        [Display(Name = "País")] //Así se muestra en la UI. En SQL: 'AS'
+        [Display(Name = "Ciudad")] //Así se muestra en la UI. En SQL: 'AS'
         [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres.")]//Longituda máxima de 100 caracteres (nvarchar(50))
         [Required(ErrorMessage = "El campo {0} es obligatorio.")] //NOT NULL
         public string Name { get; set; }
 
         [Display(Name = "Estado")]
-        public ICollection<State> States { get; set; } //Un país puede tener n estados
+        public State State { get; set; }
 
-        //Propiedad de lectura que no se mapea en la tabla de la DB
-        public int StatesNumber => States == null ? 0 : States.Count; //if ternario. (? -> Entonces). (: -> Sino)
+        //FK
+        //[Display(Name = "IdEstado")]
+        [Required]
+        public Guid StateId { get; set; }
     }
 }
