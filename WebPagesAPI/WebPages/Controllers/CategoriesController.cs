@@ -13,6 +13,8 @@ namespace WebPages.Controllers
         {
             _httpClient = httpClient;
         }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var url = "https://localhost:7174/api/Categories/Get";
@@ -22,6 +24,21 @@ namespace WebPages.Controllers
             return View(categories);
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Category category)
+        {
+            var url = "https://localhost:7174/api/Categories/Create";
+            await _httpClient.CreateClient().PostAsJsonAsync(url, category);
+
+            return RedirectToAction("Index");
+        }
         
     }
 }
