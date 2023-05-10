@@ -39,6 +39,26 @@ namespace WebPages.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+            var url = String.Format("https://localhost:7174/api/Categories/Get/{0}", id);
+            var json = await _httpClient.CreateClient().GetStringAsync(url);
+            Category category = JsonConvert.DeserializeObject<Category>(json);
+
+            return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid? id, Category category)
+        {
+            var url = String.Format("https://localhost:7174/api/Categories/Edit/{0}", id);
+            await _httpClient.CreateClient().PutAsJsonAsync(url, category);
+
+            return RedirectToAction("Index");
+        }
         
     }
 }
