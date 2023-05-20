@@ -43,11 +43,7 @@ namespace WebPages.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            var url = String.Format("https://localhost:7174/api/Categories/Get/{0}", id);
-            var json = await _httpClient.CreateClient().GetStringAsync(url);
-            Category category = JsonConvert.DeserializeObject<Category>(json);
-
-            return View(category);
+            return View(await GetCategories(id));
         }
 
         [HttpPost]
@@ -59,6 +55,32 @@ namespace WebPages.Controllers
 
             return RedirectToAction("Index");
         }
-        
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid? id)
+        {
+            return View(await GetCategories(id));
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            var url = String.Format("https://localhost:7174/api/Categories/Delete/{0}", id);
+            await _httpClient.CreateClient().DeleteAsync(url);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            return View(await GetCategories(id));
+        }
+
+        private async Task<Category> GetCategories(Guid? id)
+        {
+            var url = String.Format("https://localhost:7174/api/Categories/Get/{0}", id);
+            return JsonConvert.DeserializeObject<Category>(await _httpClient.CreateClient().GetStringAsync(url));
+        }
     }
 }
